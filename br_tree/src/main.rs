@@ -1,6 +1,6 @@
 fn main() {
     let b_tree = BTree::new(95);
-
+    //b_tree.add_value(11);
 
 }
 
@@ -10,23 +10,37 @@ struct BNodei32 {
     pub right: Option<Box<BNodei32>>
 }
 
+impl BNodei32 {
+    pub fn new(value: i32) -> Self {
+        BNodei32 { value: value, left: None, right: None }
+    }
+}
+
 struct BTree {
     pub root_node: Option<Box<BNodei32>>
 }
 
 impl BTree {
-    pub fn add_value(&self, value: i32) {
-        let root_node_opt = &self.root_node;
-        let root_value = match root_node_opt {
+    pub fn add_value(&mut self, value: i32) {
+        let root_node_opt = &mut self.root_node;
+        let root_node = match root_node_opt {
             None => panic!("what what what??"),
-            Some(asd) => asd.value
+            Some(node_ref) => node_ref
         };
 
-        let uuu = match root_value > value {
-            true => {},
-            false => {println!("asdsadad")}
-        };
-
+        match root_node.value > value {
+            true => {
+                match &root_node.left {
+                    None => root_node.left = Some(Box::new(BNodei32::new(value))),
+                    Some(left) => {
+                        println!("{}", left.value);
+                    }
+                }
+            },
+            false => {
+                println!("asdsadad")
+            }
+        }
     }
 
     fn compare_node_and_value(node: BNodei32, ) {
