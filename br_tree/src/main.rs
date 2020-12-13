@@ -14,6 +14,8 @@ impl BNodei32 {
     pub fn new(value: i32) -> Self {
         BNodei32 { value: value, left: None, right: None }
     }
+
+
 }
 
 struct BTree {
@@ -50,5 +52,30 @@ impl BTree {
     pub fn new(initial_value: i32) -> Self {
         let root_node = Box::new(BNodei32 { value: initial_value, left: None, right: None }) ;
         BTree {root_node: Some(root_node)}
+    }
+}
+
+
+// Add
+pub fn add_value_to_tree_node_box(node_box:Box<BNodei32>, value: i32) {
+    match node_box.value > value {
+        true => {
+            match &node_box.left {
+                None => node_box.left = Some(Box::new(BNodei32::new(value))),
+                Some(_) => {
+                    //println!("{}", left.value);
+                    add_value_to_tree_node_box(node_box.left.unwrap(), value)
+                }
+            }
+        },
+        false => {
+            match &node_box.left {
+                None => node_box.right = Some(Box::new(BNodei32::new(value))),
+                Some(_) => {
+                    //println!("{}", left.value);
+                    add_value_to_tree_node_box(node_box.right.unwrap(), value)
+                }
+            }
+        }
     }
 }
