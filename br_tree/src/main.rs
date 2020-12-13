@@ -14,12 +14,7 @@ impl BNodei32 {
     pub fn new(value: i32) -> Self {
         BNodei32 { value: value, left: None, right: None }
     }
-
-
 }
-
-
-
 
 pub struct BTree {
     pub root_node: Option<Box<BNodei32>>
@@ -33,23 +28,6 @@ impl BTree {
             Some(node_ref) => node_ref
         };
         add_value_to_tree_node_box(root_node, value);
-        // match root_node.value > value {
-        //     true => {
-        //         match &root_node.left {
-        //             None => root_node.left = Some(Box::new(BNodei32::new(value))),
-        //             Some(left) => {
-        //                 println!("{}", left.value);
-        //             }
-        //         }
-        //     },
-        //     false => {
-        //         println!("asdsadad")
-        //     }
-        // }
-    }
-
-    fn compare_node_and_value(node: BNodei32, ) {
-
     }
 
     pub fn new(initial_value: i32) -> Self {
@@ -71,7 +49,7 @@ pub fn add_value_to_tree_node_box(node_box:&mut Box<BNodei32>, value: i32) {
                 },
                 Some(_) => {
                     //println!("{}", left.value);
-                    let a = &mut node_box.left;
+                    //let a = &mut node_box.left;
                     //let b= a.unwrap();
                     //add_value_to_tree_node_box(&mut node_box.left.unwrap(), value)
                 }
