@@ -41,29 +41,30 @@ impl BTree {
 pub fn add_value_to_tree_node_box(node_box:&mut Box<BNodei32>, value: i32) {
     match node_box.value > value {
         true => {
-            match &node_box.left {
+            match &mut node_box.left {
                 None => {
                     println!("adding value left: {}", &value);
                     node_box.left = Some(Box::new(BNodei32::new(value)))
                 
                 },
-                Some(_) => {
+                Some(l) => {
                     //println!("{}", left.value);
                     //let a = &mut node_box.left;
                     //let b= a.unwrap();
-                    //add_value_to_tree_node_box(&mut node_box.left.unwrap(), value)
+                
+                    add_value_to_tree_node_box(l, value)
                 }
             }
         },
         false => {
-            match &node_box.right {
+            match &mut node_box.right {
                 None => {
                     println!("adding value right: {}", &value);
                     node_box.right = Some(Box::new(BNodei32::new(value)))
                 },
-                Some(_) => {
+                Some(r) => {
                     //println!("{}", left.value);
-                    //add_value_to_tree_node_box(&mut node_box.right.unwrap(), value)
+                    add_value_to_tree_node_box(r, value)
                 }
             }
         }
