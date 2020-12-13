@@ -2,6 +2,13 @@ fn main() {
     let mut b_tree = BTree::new(95);
     b_tree.add_value(11);
     b_tree.add_value(111);
+    b_tree.add_value(112);
+    b_tree.add_value(2);
+    b_tree.add_value(12);
+    b_tree.add_value(60);
+    //println!("{}",b_tree.count);
+    let asd = b_tree.root_node.unwrap().left.unwrap().left.unwrap().value;
+    println!("{}", asd);
 }
 
 pub struct BNodei32 {
@@ -17,7 +24,8 @@ impl BNodei32 {
 }
 
 pub struct BTree {
-    pub root_node: Option<Box<BNodei32>>
+    pub root_node: Option<Box<BNodei32>>,
+    pub count: usize
 }
 
 impl BTree {
@@ -27,12 +35,13 @@ impl BTree {
             None => panic!("what what what??"),
             Some(node_ref) => node_ref
         };
+        self.count += 1;
         add_value_to_tree_node_box(root_node, value);
     }
 
     pub fn new(initial_value: i32) -> Self {
         let root_node = Box::new(BNodei32 { value: initial_value, left: None, right: None }) ;
-        BTree {root_node: Some(root_node)}
+        BTree {root_node: Some(root_node), count: 0}
     }
 }
 
