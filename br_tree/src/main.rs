@@ -1,4 +1,4 @@
-use Serde::
+use serde::{Serialize, Deserialize};
 
 fn main() {
     let mut b_tree = BTree::new(95);
@@ -8,12 +8,12 @@ fn main() {
     b_tree.add_value(2);
     b_tree.add_value(12);
     b_tree.add_value(60);
-    b_tree.reverse();
-    let asd = b_tree.root_node.unwrap().left.unwrap().left.unwrap().value;
+    //b_tree.reverse();
+    //let asd = b_tree.root_node.unwrap().left.unwrap().left.unwrap().value;
     println!("{:?}", b_tree);
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BNodei32 {
     pub value: i32,
     pub left: Option<Box<BNodei32>>,
@@ -41,7 +41,7 @@ impl BNodei32 {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BTree {
     pub root_node: Option<Box<BNodei32>>,
     pub count: usize
