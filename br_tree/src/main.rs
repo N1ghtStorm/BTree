@@ -28,13 +28,15 @@ impl BTree {
 
     // adds a value
     pub fn add_value(&mut self, value: i32) {
-        let root_node_opt = &mut self.root_node;
-        let root_node = match root_node_opt {
-            None => panic!("what what what???"),
-            Some(node_ref) => node_ref
+        match &mut self.root_node {
+            None => {
+                self.root_node = Some(Box::new(BNodei32::new(value)));
+            },
+            Some(node_ref) => {
+                self.count += 1;
+                add_value_to_tree_node_box(node_ref, value)
+            }
         };
-        self.count += 1;
-        add_value_to_tree_node_box(root_node, value);
     }
 
     // constructor
@@ -51,14 +53,14 @@ impl BTree {
         }
     }
 
+    // checks if has value
     pub fn does_have_value(&self ,value: i32) -> bool {
         match &self.root_node {
             None => false,
             Some(ro_node) => {
                 if value == ro_node.value {
                     return true;
-                }
-                else {
+                } else {
                     return BNodei32::any_has_value(value, &ro_node.left, &ro_node.right);
                 }
             }
@@ -87,6 +89,7 @@ impl BNodei32 {
         }
     }
 
+    // checks if left or right has value
     pub fn any_has_value(value: i32,
                           opt_node_ref_left: &Option<Box<BNodei32>>,
                           opt_node_ref_right: &Option<Box<BNodei32>>)
@@ -95,21 +98,19 @@ impl BNodei32 {
         BNodei32::does_node_has_value(value, opt_node_ref_right) == true;
     }
 
+    // checks if node recurively has value
     pub fn does_node_has_value(value: i32, opt_node_ref: &Option<Box<BNodei32>>) -> bool {
         return match opt_node_ref {
             None => false,
             Some(ro_node) =>
                 if value == ro_node.value {
                     return true
-                }
-                else {
+                } else {
                     return BNodei32::any_has_value(value, &ro_node.right, &ro_node.left);
                 }
         }
     }
 }
-
-
 
 // adds value to node
 pub fn add_value_to_tree_node_box(node_box:&mut Box<BNodei32>, value: i32) {
