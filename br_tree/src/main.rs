@@ -10,7 +10,7 @@ fn main() {
     b_tree.add_value(60);
     //b_tree.reverse();
     //let asd = b_tree.root_node.unwrap().left.unwrap().left.unwrap().value;
-    println!("{:?}", b_tree);
+    println!("{:?}", b_tree.does_have_value(113));
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -61,7 +61,7 @@ impl BTree {
                     return true;
                 }
                 else {
-                    return BNodei32::does_have_value(value, &ro_node.left, &ro_node.right);
+                    return BNodei32::any_has_value(value, &ro_node.left, &ro_node.right);
                 }
             }
         }
@@ -89,9 +89,25 @@ impl BNodei32 {
         }
     }
 
-    pub fn does_have_value(value: i32, opt_node_ref_left: &Option<Box<BNodei32>>,
-                    opt_node_ref_right: &Option<Box<BNodei32>>) -> bool {
-        true
+    pub fn any_has_value(value: i32,
+                          opt_node_ref_left: &Option<Box<BNodei32>>,
+                          opt_node_ref_right: &Option<Box<BNodei32>>)
+                    -> bool {
+        return BNodei32::does_node_has_value(value,opt_node_ref_left) ||
+        BNodei32::does_node_has_value(value, opt_node_ref_right) == true;
+    }
+
+    pub fn does_node_has_value(value: i32, opt_node_ref: &Option<Box<BNodei32>>) -> bool {
+        return match opt_node_ref {
+            None => false,
+            Some(ro_node) =>
+                if value == ro_node.value {
+                    return true
+                }
+                else {
+                    return BNodei32::any_has_value(value, &ro_node.right, &ro_node.left);
+                }
+        }
     }
 }
 
