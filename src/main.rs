@@ -30,6 +30,7 @@ impl BTree {
     pub fn add_value(&mut self, value: i32) {
         match &mut self.root_node {
             None => {
+                self.count += 1;
                 self.root_node = Some(Box::new(BNodei32::new(value)));
             },
             Some(node_ref) => {
