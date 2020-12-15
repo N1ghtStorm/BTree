@@ -8,8 +8,6 @@ fn main() {
     b_tree.add_value(2);
     b_tree.add_value(12);
     b_tree.add_value(60);
-    //b_tree.reverse();
-    //let asd = b_tree.root_node.unwrap().left.unwrap().left.unwrap().value;
     println!("{:?}", b_tree.does_have_value(113));
 }
 
@@ -113,7 +111,7 @@ impl BNodei32 {
 
 
 
-// adds
+// adds value to node
 pub fn add_value_to_tree_node_box(node_box:&mut Box<BNodei32>, value: i32) {
     match node_box.value > value {
         true => {
