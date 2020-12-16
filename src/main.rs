@@ -8,7 +8,7 @@ fn main() {
     b_tree.add_value(2);
     b_tree.add_value(12);
     b_tree.add_value(60);
-    println!("{:?}", b_tree.does_have_value(113));
+    println!("{:?}", b_tree);
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -35,7 +35,7 @@ impl BTree {
             },
             Some(node_ref) => {
                 self.count += 1;
-                add_value_to_tree_node_box(node_ref, value)
+                BNodei32::add_value_to_tree_node_box(node_ref, value)
             }
         };
     }
@@ -111,32 +111,35 @@ impl BNodei32 {
                 }
         }
     }
-}
 
-// adds value to node
-pub fn add_value_to_tree_node_box(node_box:&mut Box<BNodei32>, value: i32) {
-    match node_box.value > value {
-        true => {
-            match &mut node_box.left {
-                None => {
-                    println!("adding value left: {}", &value);
-                    node_box.left = Some(Box::new(BNodei32::new(value)))
-                },
-                Some(l) => {
-                    add_value_to_tree_node_box(l, value)
+    // adds value to node
+    pub fn add_value_to_tree_node_box(node_box:&mut Box<BNodei32>, value: i32) {
+        match node_box.value > value {
+            true => {
+                match &mut node_box.left {
+                    None => {
+                        println!("adding value left: {}", &value);
+                        node_box.left = Some(Box::new(BNodei32::new(value)))
+                    },
+                    Some(l) => {
+                        BNodei32::add_value_to_tree_node_box(l, value)
+                    }
                 }
-            }
-        },
-        false => {
-            match &mut node_box.right {
-                None => {
-                    println!("adding value right: {}", &value);
-                    node_box.right = Some(Box::new(BNodei32::new(value)))
-                },
-                Some(r) => {
-                    add_value_to_tree_node_box(r, value)
+            },
+            false => {
+                match &mut node_box.right {
+                    None => {
+                        println!("adding value right: {}", &value);
+                        node_box.right = Some(Box::new(BNodei32::new(value)))
+                    },
+                    Some(r) => {
+                        BNodei32::add_value_to_tree_node_box(r, value)
+                    }
                 }
             }
         }
     }
 }
+
+
+
