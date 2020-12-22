@@ -9,6 +9,8 @@ fn main() {
     b_tree.add_value(12);
     b_tree.add_value(60);
     println!("{:?}", b_tree);
+    println!("{:?}", &b_tree.tree_search(44));
+    println!("{:?}", &b_tree.does_have_value(44));
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -130,20 +132,24 @@ impl BNodei32 {
 
     // search value in the tree
     pub fn tree_search(&self, value: i32) -> bool {
+        if self.value == value {
+            return true;
+        }
+
         match self.value > value {
             false => {
-                match &self.left {
-                    None => false,
-                    Some(left) => {
-                        return left.tree_search(value);
-                    }
-                }
-            },
-            true => {
                 match &self.right {
                     None => false,
                     Some(right) => {
                         return right.tree_search(value);
+                    }
+                }
+            },
+            true => {
+                match &self.left {
+                    None => false,
+                    Some(left) => {
+                        return left.tree_search(value);
                     }
                 }
             }
