@@ -14,7 +14,8 @@ fn main() {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BTree {
     pub root_node: Option<Box<BNodei32>>,
-    pub count: usize
+    pub count: usize,
+    pub is_inverted: bool
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -43,18 +44,19 @@ impl BTree {
     // constructor
     pub fn new(initial_value: i32) -> Self {
         let root_node = Box::new(BNodei32 { value: initial_value, left: None, right: None }) ;
-        BTree {root_node: Some(root_node), count: 0}
+        BTree {root_node: Some(root_node), count: 0, is_inverted: false}
     }
 
     // reverses tree recurively
     pub fn reverse(&mut self) {
+        self.is_inverted = !self.is_inverted;
         match &mut self.root_node {
             None => {},
             Some(root_node) => root_node.swap()
         }
     }
 
-    // checks if has value
+    // checks if has value (without tree serach)
     pub fn does_have_value(&self ,value: i32) -> bool {
         match &self.root_node {
             None => false,
@@ -63,6 +65,20 @@ impl BTree {
                     return true;
                 } else {
                     return BNodei32::any_has_value(value, &ro_node.left, &ro_node.right);
+                }
+            }
+        }
+    }
+
+    // tree search value
+    pub fn tree_search(&self ,value: i32) -> bool {
+        match &self.root_node {
+            None => false,
+            Some(ro_node) => {
+                if value == ro_node.value {
+                    return true;
+                } else {
+                   return ro_node.tree_search(value);
                 }
             }
         }
@@ -109,6 +125,28 @@ impl BNodei32 {
                 } else {
                     return BNodei32::any_has_value(value, &ro_node.right, &ro_node.left);
                 }
+        }
+    }
+
+    // search value in the tree
+    pub fn tree_search(&self, value: i32) -> bool {
+        match self.value > value {
+            false => {
+                match &self.left {
+                    None => false,
+                    Some(left) => {
+                        return left.tree_search(value);
+                    }
+                }
+            },
+            true => {
+                match &self.right {
+                    None => false,
+                    Some(right) => {
+                        return right.tree_search(value);
+                    }
+                }
+            }
         }
     }
 
