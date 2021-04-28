@@ -1,16 +1,44 @@
 use serde::{Serialize, Deserialize};
+use std::time::{Instant};
+use std::collections::LinkedList;
 
 fn main() {
-    let mut b_tree = BTree::new(95);
-    b_tree.add_value(11);
-    b_tree.add_value(111);
-    b_tree.add_value(112);
-    b_tree.add_value(2);
-    b_tree.add_value(12);
-    b_tree.add_value(60);
-    println!("{:?}", b_tree);
-    println!("{:?}", &b_tree.tree_search(44));
-    println!("{:?}", &b_tree.does_have_value(44));
+    // let mut b_tree = BTree::new(95);
+    // b_tree.add_value(11);
+    // b_tree.add_value(111);
+    // b_tree.add_value(112);
+    // b_tree.add_value(2);
+    // b_tree.add_value(12);
+    // b_tree.add_value(60);
+    // println!("{:?}", b_tree);
+    // println!("{:?}", &b_tree.tree_search(44));
+    // println!("{:?}", &b_tree.does_have_value(44));
+
+    let mut b_tree = BTree::new(0);
+
+    for i in 1..43000 {
+        b_tree.add_value(i);
+    }
+
+    for i in -1..-43000 {
+        b_tree.add_value(i);
+    }
+
+    let start_1 = Instant::now();
+    drop(b_tree);
+    let duration_1 = start_1.elapsed();
+    println!("Tree drop: {:?}", duration_1);
+
+    // let mut list: LinkedList<i32> = LinkedList::new();
+    // for i in 0..1_000_000 {
+    //     list.push_back(i)
+    // }
+
+    // let start_2 = Instant::now();
+    // drop(list);
+    // let duration_2 = start_2.elapsed();
+    // println!("Tree drop: {:?}", duration_2);
+    
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -162,7 +190,7 @@ impl BNodei32 {
             true => {
                 match &mut node_box.left {
                     None => {
-                        println!("adding value left: {}", &value);
+                        //println!("adding value left: {}", &value);
                         node_box.left = Some(Box::new(BNodei32::new(value)))
                     },
                     Some(l) => {
@@ -173,7 +201,7 @@ impl BNodei32 {
             false => {
                 match &mut node_box.right {
                     None => {
-                        println!("adding value right: {}", &value);
+                        //println!("adding value right: {}", &value);
                         node_box.right = Some(Box::new(BNodei32::new(value)))
                     },
                     Some(r) => {
